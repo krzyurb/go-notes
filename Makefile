@@ -4,7 +4,7 @@ build:
 	go build ./src -o $(BINARY)
 
 test:
-	go test
+	go test ./tests/...
 
 clean:
 	go clean
@@ -12,4 +12,4 @@ clean:
 
 run:
 	go build -o $(BINARY)
-	./build/app
+	./$(BINARY)

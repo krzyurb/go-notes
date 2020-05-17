@@ -1,11 +1,9 @@
 package main
 
 import (
-	"fmt"
-	"notes/foo"
+	"notesapp/http"
 )
 
 func main() {
-	foo.Bar()
-	fmt.Print("Hello world")
+	http.BuildServer(8080, http.BuildRouter()).Run()
 }
