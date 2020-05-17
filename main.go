@@ -5,5 +5,5 @@ import (
 )
 
 func main() {
-	http.BuildServer(8080, http.BuildRouter()).Run()
+	http.BuildServer(http.BuildRouter()).Run()
 }

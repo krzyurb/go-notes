@@ -1,15 +1,16 @@
-BINARY=build/app
+DOCKER_COMPOSE = docker-compose
+GO_COMMAND = go
+TESTS_DIR =tests
 
-build:
-	go build ./src -o $(BINARY)
+up:
+	$(DOCKER_COMPOSE) up -d --remove-orphans
+
+logs:
+	$(DOCKER_COMPOSE) logs -f
+
+
+down:
+	$(DOCKER_COMPOSE) down
 
 test:
-	go test ./tests/...
-
-clean:
-	go clean
-	rm -f $(BINARY)
-
-run:
-	go build -o $(BINARY)
-	./$(BINARY)
+	$(GO_COMMAND) test ./$(TESTS_DIR)/...

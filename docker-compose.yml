@@ -1,0 +1,25 @@
+version: '3.7'
+
+x-envs: &common-envs
+  ENVIRONMENT: develop
+  GIN_MODE: debug
+  DB_HOST: db.api.dev.adn.local
+
+services:
+  notesapp.api:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    restart: unless-stopped
+    networks:
+      - backend
+    ports:
+      - 8080:8080
+    environment:
+      <<: *common-envs
+    command: fresh
+    volumes:
+      - .:/app:delegated
+
+networks:
+  backend:
