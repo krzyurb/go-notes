@@ -1,6 +1,6 @@
 DOCKER_COMPOSE = docker-compose
 GO_COMMAND = go
-TESTS_DIR =tests
+TESTS_DIR = tests
 
 up:
 	$(DOCKER_COMPOSE) up -d --remove-orphans

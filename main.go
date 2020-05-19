@@ -5,6 +5,7 @@ import (
 )
 
 func main() {
-	loaders.DBConnect()
+	config := loaders.BuildConfig()
+	loaders.DBConnect(config)
 	loaders.BuildServer(loaders.BuildRouter()).Run()
 }

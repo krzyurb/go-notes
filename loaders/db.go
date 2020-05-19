@@ -4,20 +4,21 @@ import (
 	"fmt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
-	"os"
 )
 
-func DBConnect () *gorm.DB {
-	dbConfig := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=%s",
-		os.Getenv("DB_HOST"),
-		os.Getenv("DB_PORT"),
-		os.Getenv("DB_USER"),
-		os.Getenv("DB_NAME"),
-		os.Getenv("DB_PASSWORD"),
-		os.Getenv("DB_SSL_MODE"),
+func dbConfig(ac AppConfig) string {
+	return fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=%s",
+		ac.DbHost,
+		ac.DbPort,
+		ac.DbUser,
+		ac.DbName,
+		ac.DbPassword,
+		ac.DbSslMode,
 	)
+}
 
-	db, err := gorm.Open("postgres", dbConfig)
+func DBConnect (ac AppConfig) *gorm.DB {
+	db, err := gorm.Open("postgres", dbConfig(ac))
 	if err != nil {
 		fmt.Println("Cannot connect to the database")
 		panic(err)
