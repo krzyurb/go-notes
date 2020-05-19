@@ -1,3 +1,4 @@
 .idea/
 tmp/
+postgres-data/
 *.DS_Store

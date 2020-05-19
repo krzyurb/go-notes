@@ -3,9 +3,28 @@ version: '3.7'
 x-envs: &common-envs
   ENVIRONMENT: develop
   GIN_MODE: debug
-  DB_HOST: db.api.dev.adn.local
+  DB_HOST: db
+  DB_PASSWORD: db-pass
+  DB_USER: db-user
+  DB_NAME: db-name
+  DB_PORT: 5432
+  DB_SSL_MODE: disable
 
 services:
+  db:
+    image: postgres
+    restart: always
+    networks:
+      - backend
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_PASSWORD: db-pass
+      POSTGRES_USER: db-user
+      POSTGRES_DB: db-name
+
   notesapp.api:
     build:
       context: .
@@ -17,6 +36,8 @@ services:
       - 8080:8080
     environment:
       <<: *common-envs
+    depends_on:
+      - db
     command: fresh
     volumes:
       - .:/app:delegated

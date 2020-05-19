@@ -1,9 +1,10 @@
 package main
 
 import (
-	"notesapp/http"
+	"notesapp/loaders"
 )
 
 func main() {
-	http.BuildServer(http.BuildRouter()).Run()
+	loaders.DBConnect()
+	loaders.BuildServer(loaders.BuildRouter()).Run()
 }
