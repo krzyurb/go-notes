@@ -10,6 +10,21 @@ x-envs: &common-envs
   DB_PORT: 5432
   DB_SSL_MODE: disable
 
+x-e2e-envs: &common-e2e-envs
+  ENVIRONMENT: test
+  GIN_MODE: debug
+  DB_HOST: db
+  DB_PASSWORD: db-pass
+  DB_USER: db-user
+  DB_NAME: db-name
+  DB_PORT: 5432
+  DB_SSL_MODE: disable
+
+x-db-envs: &db-envs
+  POSTGRES_PASSWORD: db-pass
+  POSTGRES_USER: db-user
+  POSTGRES_DB: db-name
+
 services:
   db:
     image: postgres
@@ -21,15 +36,25 @@ services:
     ports:
       - '5432:5432'
     environment:
-      POSTGRES_PASSWORD: db-pass
-      POSTGRES_USER: db-user
-      POSTGRES_DB: db-name
+      <<: *db-envs
+
+  db.e2e:
+    image: postgres
+    restart: always
+    networks:
+      - backend
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+#    ports:
+#      - '5432:5432'
+    environment:
+      <<: *db-envs
 
   notesapp.api:
     build:
       context: .
       dockerfile: ./Dockerfile
-    restart: unless-stopped
+    restart: 'unless-stopped'
     networks:
       - backend
     ports:
@@ -39,6 +64,22 @@ services:
     depends_on:
       - db
     command: fresh
+    volumes:
+      - .:/app:delegated
+
+  notesapp.e2e:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    restart: 'no'
+    networks:
+      - backend
+    environment:
+      <<: *common-e2e-envs
+    depends_on:
+#      - db.e2e
+      - db
+    command: echo E2E tests container ready
     volumes:
       - .:/app:delegated
 

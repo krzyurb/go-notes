@@ -1,5 +1,4 @@
 DOCKER_COMPOSE = docker-compose
-GO_COMMAND = go
 TESTS_DIR = tests
 
 up:
@@ -13,4 +12,4 @@ down:
 	$(DOCKER_COMPOSE) down
 
 test:
-	$(GO_COMMAND) test ./$(TESTS_DIR)/...
+	$(DOCKER_COMPOSE) run --rm notesapp.e2e go test ./$(TESTS_DIR)/...
