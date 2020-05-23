@@ -1,4 +1,7 @@
 .idea/
 tmp/
-postgres-data/
+
+db-test-data/
+db-data/
+
 *.DS_Store

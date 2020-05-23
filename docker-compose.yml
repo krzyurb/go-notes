@@ -32,25 +32,34 @@ services:
     networks:
       - backend
     volumes:
-      - ./postgres-data:/var/lib/postgresql/data
+      - ./db-data:/var/lib/postgresql/data
     ports:
       - '5432:5432'
     environment:
       <<: *db-envs
 
-  db.e2e:
+  db-test:
     image: postgres
     restart: always
     networks:
       - backend
     volumes:
-      - ./postgres-data:/var/lib/postgresql/data
-#    ports:
-#      - '5432:5432'
+      - ./db-test-data:/var/lib/postgresql/data
     environment:
       <<: *db-envs
 
-  notesapp.api:
+  migrate:
+    image: migrate/migrate
+    networks:
+      - backend
+    volumes:
+      - ./db/migrations:/migrations
+    command: version
+    depends_on:
+      - db
+      - db-test
+
+  notesapp:
     build:
       context: .
       dockerfile: ./Dockerfile
@@ -67,7 +76,7 @@ services:
     volumes:
       - .:/app:delegated
 
-  notesapp.e2e:
+  notesapp-test:
     build:
       context: .
       dockerfile: ./Dockerfile
@@ -77,9 +86,8 @@ services:
     environment:
       <<: *common-e2e-envs
     depends_on:
-#      - db.e2e
-      - db
-    command: echo E2E tests container ready
+      - db-test
+    command: echo Test app container ready
     volumes:
       - .:/app:delegated
 
