@@ -1,6 +1,9 @@
 CREATE TABLE IF NOT EXISTS notes(
-    user_id serial PRIMARY KEY,
+    id serial PRIMARY KEY,
     title VARCHAR (100) UNIQUE NOT NULL,
-    password TEXT,
-    is_public BOOLEAN
+    content TEXT,
+    is_public BOOLEAN,
+    created_at DATE,
+    deleted_at DATE,
+    updated_at DATE
 );

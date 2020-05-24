@@ -14,7 +14,7 @@ down:
 	$(DOCKER_COMPOSE) down
 
 test:
-	$(DOCKER_COMPOSE) run --rm notesapp.e2e go test ./$(TESTS_DIR)/...
+	$(DOCKER_COMPOSE) run --rm notesapp-test go test ./$(TESTS_DIR)/...
 
 migrate-db-up:
 	$(DOCKER_COMPOSE) $(RUN_MIGRATION) $(DB_CONNECTION) up

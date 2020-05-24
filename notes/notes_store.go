@@ -6,7 +6,7 @@ type Note struct {
 	gorm.Model
 	Title string
 	Content string
-	Public bool
+	IsPublic bool
 }
 
 type NotesStore struct {

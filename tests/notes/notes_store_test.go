@@ -2,18 +2,30 @@ package notes
 
 import (
 	"github.com/go-playground/assert/v2"
-	db2 "notesapp/db"
-	"notesapp/loaders"
 	"notesapp/notes"
+	"notesapp/tests/helpers"
 	"testing"
 )
 
 func TestNotesStore(t *testing.T){
-	db := db2.BuildConnection(loaders.BuildConfig())
-	store := notes.NotesStore{Db: db}
+	dbHelper := helpers.BuildDbHelper()
+	store := notes.NotesStore{Db: dbHelper.Db}
 
-	t.Run("get all notes", func (t *testing.T) {
-		note := store.GetByID("AAA")
-		assert.Equal(t, note, nil)
+	t.Run("responds with empty list if no notes", func (t *testing.T) {
+		dbHelper.Clear()
+
+		result := store.GetAll()
+		assert.Equal(t, len(result), 0)
+	})
+
+	t.Run("responds with all notes", func (t *testing.T) {
+		dbHelper.Clear()
+
+		dbHelper.CreateNote()
+		dbHelper.CreateNote()
+		
+		result := store.GetAll()
+
+		assert.Equal(t, len(result), 2)
 	})
 }
