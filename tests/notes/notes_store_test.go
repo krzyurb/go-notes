@@ -23,7 +23,7 @@ func TestNotesStore(t *testing.T){
 
 		dbHelper.CreateNote()
 		dbHelper.CreateNote()
-		
+
 		result := store.GetAll()
 
 		assert.Equal(t, len(result), 2)
